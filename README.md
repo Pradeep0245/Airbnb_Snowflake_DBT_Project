@@ -262,7 +262,7 @@ Through this project, I gained hands-on experience with:
 
 **Pradeep Prakash**
 
-🔗 LinkedIn: *(Add your LinkedIn URL)*
+🔗 LinkedIn: *([Add your LinkedIn URL)](https://www.linkedin.com/in/visit-pradeepprakash/)*
 
 🐙 GitHub: *(Add your GitHub Profile URL)*
 
