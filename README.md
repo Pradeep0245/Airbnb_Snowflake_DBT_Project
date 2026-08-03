@@ -1,117 +1,271 @@
-#🏠 Airbnb End-to-End Data Engineering Project
+# 🏠 Airbnb End-to-End Data Engineering Project
 
-**📋 Overview**
-This project implements a complete end-to-end data engineering pipeline for Airbnb data using modern cloud technologies. The solution demonstrates best practices in data warehousing, transformation, and analytics using Snowflake, dbt (Data Build Tool), and AWS.
+## 📋 Overview
 
-The pipeline processes Airbnb listings, bookings, and hosts data through a medallion architecture (Bronze → Silver → Gold), implementing incremental loading, slowly changing dimensions (SCD Type 2), and creating analytics-ready datasets.
+This project implements a complete **end-to-end data engineering pipeline** for Airbnb data using modern cloud technologies.
 
-🏗️ Architecture
-Data Flow
-Source Data (CSV) → AWS S3 → Snowflake (Staging) → Bronze Layer → Silver Layer → Gold Layer
-                                                           ↓              ↓           ↓
-                                                      Raw Tables    Cleaned Data   Analytics
-Technology Stack
-Cloud Data Warehouse: Snowflake
-Transformation Layer: dbt (Data Build Tool)
-Cloud Storage: AWS S3 (implied)
-Version Control: Git
-Python: 3.12+
-Key dbt Features:
-Incremental models
-Snapshots (SCD Type 2)
-Custom macros
-Jinja templating
-Testing and documentation
-📊 Data Model
-Medallion Architecture
-🥉 Bronze Layer (Raw Data)
-Raw data ingested from staging with minimal transformations:
+The solution demonstrates best practices in **data warehousing, transformation, and analytics** using **Snowflake**, **dbt (Data Build Tool)**, and **AWS**.
 
-bronze_bookings - Raw booking transactions
-bronze_hosts - Raw host information
-bronze_listings - Raw property listings
-🥈 Silver Layer (Cleaned Data)
-Cleaned and standardized data:
+The pipeline processes Airbnb **Listings**, **Bookings**, and **Hosts** data through a **Medallion Architecture (Bronze → Silver → Gold)** while implementing:
 
-silver_bookings - Validated booking records
-silver_hosts - Enhanced host profiles with quality metrics
-silver_listings - Standardized listing information with price categorization
-🥇 Gold Layer (Analytics-Ready)
-Business-ready datasets optimized for analytics:
+- Incremental Loading
+- Slowly Changing Dimensions (SCD Type 2)
+- Modular dbt Models
+- Analytics-ready Data Warehouse
 
-obt (One Big Table) - Denormalized fact table joining bookings, listings, and hosts
-fact - Fact table for dimensional modeling
-Ephemeral models for intermediate transformations
-Snapshots (SCD Type 2)
-Slowly Changing Dimensions to track historical changes:
+---
 
-dim_bookings - Historical booking changes
-dim_hosts - Historical host profile changes
-dim_listings - Historical listing changes
-📁 Project Structure
+# 🏗️ Architecture
+
+## Data Flow
+
+```text
+             Source Data (CSV)
+                     │
+                     ▼
+                 AWS S3 Bucket
+                     │
+                     ▼
+          Snowflake Staging Tables
+                     │
+                     ▼
+               🥉 Bronze Layer
+                     │
+                     ▼
+               🥈 Silver Layer
+                     │
+                     ▼
+                🥇 Gold Layer
+                     │
+                     ▼
+          Analytics & BI Reporting
+```
+
+---
+
+# 🚀 Technology Stack
+
+| Technology | Purpose |
+|------------|----------|
+| ❄️ Snowflake | Cloud Data Warehouse |
+| ⚙️ dbt | Data Transformation |
+| ☁️ AWS S3 | Data Storage |
+| 🐍 Python 3.12 | Development |
+| 📝 SQL | Data Transformation |
+| 🔀 Git | Version Control |
+| 🐙 GitHub | Repository Hosting |
+
+---
+
+# ✨ Key dbt Features
+
+- ✅ Incremental Models
+- ✅ Snapshots (SCD Type 2)
+- ✅ Jinja Templating
+- ✅ Custom Macros
+- ✅ Data Testing
+- ✅ Documentation
+- ✅ Modular SQL
+
+---
+
+# 📊 Data Model
+
+## 🏗️ Medallion Architecture
+
+### 🥉 Bronze Layer (Raw Data)
+
+Raw data is loaded from the staging schema with minimal transformations.
+
+Tables:
+
+- `bronze_bookings`
+- `bronze_hosts`
+- `bronze_listings`
+
+---
+
+### 🥈 Silver Layer (Cleaned Data)
+
+Data cleaning, validation, and business logic.
+
+Tables:
+
+- `silver_bookings`
+- `silver_hosts`
+- `silver_listings`
+
+Features:
+
+- Standardized data
+- Data quality improvements
+- Price categorization
+- Host quality metrics
+
+---
+
+### 🥇 Gold Layer (Business Layer)
+
+Analytics-ready models optimized for reporting.
+
+Tables:
+
+- `obt` (One Big Table)
+- `fact`
+
+Also includes:
+
+- Ephemeral Models
+- Business Metrics
+
+---
+
+# 📸 Snapshots (SCD Type 2)
+
+Historical tracking using dbt Snapshots.
+
+Tables:
+
+- `dim_bookings`
+- `dim_hosts`
+- `dim_listings`
+
+Features:
+
+- Historical version tracking
+- `dbt_valid_from`
+- `dbt_valid_to`
+- Current record identification
+
+## 📁 Project Structure
+
+```text
 AWS_DBT_Snowflake/
-├── README.md                           # This file
-├── pyproject.toml                      # Python dependencies
-├── main.py                             # Main execution script
 │
-├── SourceData/                         # Raw CSV data files
+├── README.md
+│   └── Project documentation, setup guide, architecture, and usage instructions.
+│
+├── pyproject.toml
+│   └── Python project configuration and dependency management.
+│
+├── main.py
+│   └── Optional Python entry point for running project utilities or automation.
+│
+├── SourceData/
 │   ├── bookings.csv
 │   ├── hosts.csv
 │   └── listings.csv
+│   └── Raw Airbnb datasets used as the source for the pipeline.
 │
-├── DDL/                                # Database schema definitions
-│   ├── ddl.sql                         # Table creation scripts
+├── DDL/
+│   ├── ddl.sql
 │   └── resources.sql
+│   └── SQL scripts used to create databases, schemas, tables, warehouses,
+│       and other Snowflake resources.
 │
-└── aws_dbt_snowflake_project/         # Main dbt project
-    ├── dbt_project.yml                 # dbt project configuration
-    ├── ExampleProfiles.yml             # Snowflake connection profile
+└── aws_dbt_snowflake_project/
     │
-    ├── models/                         # dbt models
+    ├── dbt_project.yml
+    │   └── Main dbt project configuration defining models, materializations,
+    │       schemas, and project settings.
+    │
+    ├── ExampleProfiles.yml
+    │   └── Sample Snowflake connection profile.
+    │       (Actual profiles.yml should never be committed to GitHub.)
+    │
+    ├── models/
+    │   │
     │   ├── sources/
-    │   │   └── sources.yml             # Source definitions
-    │   ├── bronze/                     # Raw data layer
-    │   │   ├── bronze_bookings.sql
-    │   │   ├── bronze_hosts.sql
-    │   │   └── bronze_listings.sql
-    │   ├── silver/                     # Cleaned data layer
-    │   │   ├── silver_bookings.sql
-    │   │   ├── silver_hosts.sql
-    │   │   └── silver_listings.sql
-    │   └── gold/                       # Analytics layer
-    │       ├── fact.sql
-    │       ├── obt.sql
-    │       └── ephemeral/              # Temporary models
-    │           ├── bookings.sql
-    │           ├── hosts.sql
-    │           └── listings.sql
+    │   │   └── Source definitions and freshness tests for raw Snowflake tables.
+    │   │
+    │   ├── bronze/
+    │   │   └── Raw ingestion layer with incremental loading from staging tables.
+    │   │
+    │   ├── silver/
+    │   │   └── Cleaned, standardized, and business-ready transformation layer.
+    │   │
+    │   └── gold/
+    │       └── Analytics-ready dimensional models, fact tables,
+    │           One Big Table (OBT), and reporting datasets.
     │
-    ├── macros/                         # Reusable SQL functions
-    │   ├── generate_schema_name.sql    # Custom schema naming
-    │   ├── multiply.sql                # Math operations
-    │   ├── tag.sql                     # Categorization logic
-    │   └── trimmer.sql                 # String utilities
+    ├── macros/
+    │   └── Reusable Jinja SQL macros to eliminate repetitive SQL code
+    │       and improve maintainability.
     │
-    ├── analyses/                       # Ad-hoc analysis queries
-    │   ├── explore.sql
-    │   ├── if_else.sql
-    │   └── loop.sql
+    ├── analyses/
+    │   └── Exploratory SQL queries and Jinja examples used for
+    │       experimentation and debugging.
     │
-    ├── snapshots/                      # SCD Type 2 configurations
-    │   ├── dim_bookings.yml
-    │   ├── dim_hosts.yml
-    │   └── dim_listings.yml
+    ├── snapshots/
+    │   └── dbt Snapshot definitions implementing Slowly Changing
+    │       Dimensions (SCD Type 2) for historical tracking.
     │
-    ├── tests/                          # Data quality tests
-    │   └── source_tests.sql
+    ├── tests/
+    │   └── Custom SQL tests and data quality validation rules.
     │
-    └── seeds/                          # Static reference data
-🚀 Getting Started
-Prerequisites
-Snowflake Account (will create one if doesn't exist)
+    └── seeds/
+        └── Static CSV reference data loaded directly into Snowflake
+            using dbt seed.
+```
 
-Python Environment
 
-Python 3.12 or higher
-pip or uv package manager
-**AWS Account (will create one if doesn't exist) ** (for S3 storage)
+# 📈 Features Implemented
+
+- ✔️ Incremental Loading
+- ✔️ Bronze, Silver & Gold Layers
+- ✔️ Slowly Changing Dimensions (SCD Type 2)
+- ✔️ Jinja Loops
+- ✔️ Jinja Variables
+- ✔️ Custom Macros
+- ✔️ Ephemeral Models
+- ✔️ One Big Table (OBT)
+- ✔️ Fact Table
+- ✔️ Modular SQL Development
+- ✔️ Snapshot Management
+
+---
+
+# 📷 Screenshots
+
+> Add screenshots here:
+
+- dbt Lineage Graph
+- Snowflake Tables
+- Query Results
+- Architecture Diagram
+
+Example:
+
+```markdown
+![Lineage](images/lineage.png)
+```
+
+---
+
+# 📚 Learning Outcomes
+
+Through this project, I gained hands-on experience with:
+
+- Modern Data Engineering Architecture
+- Snowflake Data Warehouse
+- dbt Core
+- SQL Transformations
+- Incremental Models
+- Snapshots (SCD Type 2)
+- Jinja Templating
+- Data Warehouse Design
+- Git & GitHub
+
+---
+
+# 👨‍💻 Author
+
+**Pradeep Prakash**
+
+🔗 LinkedIn: *(Add your LinkedIn URL)*
+
+🐙 GitHub: *(Add your GitHub Profile URL)*
+
+---
+
+## ⭐ If you found this project helpful, please consider giving it a star!
